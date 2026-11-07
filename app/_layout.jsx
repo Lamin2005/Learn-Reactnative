@@ -14,6 +14,7 @@ const RootLayout = () => {
           backgroundColor: theme.primary,
         },
         headerTintColor: theme.text,
+        animation: "slide_from_right",
       }}
     >
       <Stack.Screen
@@ -24,9 +25,9 @@ const RootLayout = () => {
       />
 
       <Stack.Screen
-        name="contact"
+        name="(auth)"
         options={{
-          title: "Contact",
+          headerShown: false,
         }}
       />
 

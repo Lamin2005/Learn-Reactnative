@@ -17,11 +17,11 @@ const Home = () => {
         <Text style={styles.cardDescription}>
           I'm La Min Hein. I'm learning React Native.
         </Text>
-        <Link href="/about" style={styles.linkButton}>
-          <ThemeText style={styles.linkText}>About Me</ThemeText>
+        <Link href="/login" style={styles.linkButton}>
+          <ThemeText style={styles.linkText}>Login</ThemeText>
         </Link>
-        <Link href="/contact" style={styles.linkButton}>
-          <ThemeText style={styles.linkText}>Contact Me</ThemeText>
+        <Link href="/register" style={styles.linkButton}>
+          <ThemeText style={styles.linkText}>Register</ThemeText>
         </Link>
       </ThemeCard>
     </ThemeView>
