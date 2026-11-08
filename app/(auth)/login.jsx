@@ -1,11 +1,10 @@
 import {
   StyleSheet,
   View,
-  Pressable,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  useColorScheme,
+  Pressable,
 } from "react-native";
 
 import { Link } from "expo-router";
@@ -13,23 +12,16 @@ import { useState } from "react";
 
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
-import ThemeCard from "../../components/ThemeCard";
 import ThemeInput from "../../components/ThemeInput";
-
-import Color from "../../constant/Color";
+import ThemeButton from "../../components/ThemeButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const colorScheme = useColorScheme();
-  const theme = Color[colorScheme] || Color.light;
-
   const handleLogin = () => {
-    if (!email || !password) {
-      return;
-    }
+    if (!email || !password) return;
 
     console.log({ email, password });
   };
@@ -37,114 +29,93 @@ export default function Login() {
   return (
     <ThemeView style={styles.container}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        style={{ flex: 1 }}
+        style={styles.keyboardView}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={[styles.logo, { backgroundColor: theme.primary }]}>
-              <ThemeText style={styles.logoText}>L</ThemeText>
-            </View>
+          <View style={styles.form}>
+            <View style={styles.header}>
+              <View style={styles.logo}>
+                <ThemeText style={styles.logoText}>L</ThemeText>
+              </View>
 
-            <ThemeText variant="heading">Welcome Back</ThemeText>
-
-            <ThemeText variant="secondary" style={styles.subtitle}>
-              Login to continue your journey.
-            </ThemeText>
-          </View>
-
-          {/* Login Form */}
-          <ThemeCard style={styles.card}>
-            <ThemeText variant="title">Login to your account</ThemeText>
-
-            {/* Email */}
-            <ThemeText variant="secondary" style={styles.label}>
-              Email Address
-            </ThemeText>
-
-            <ThemeInput
-              placeholder="Enter your email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-              value={email}
-              onChangeText={setEmail}
-            />
-
-            {/* Password */}
-            <ThemeText variant="secondary" style={styles.label}>
-              Password
-            </ThemeText>
-
-            <View style={styles.passwordContainer}>
-              <ThemeInput
-                placeholder="Enter your password"
-                secureTextEntry={!showPassword}
-                value={password}
-                onChangeText={setPassword}
-                style={styles.passwordInput}
-              />
-
-              <Pressable
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.showButton}
-              >
-                <ThemeText
-                  style={{
-                    color: theme.button,
-                    fontSize: 13,
-                    fontWeight: "600",
-                  }}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </ThemeText>
-              </Pressable>
-            </View>
-
-            {/* Forgot Password */}
-            <Pressable style={styles.forgot}>
-              <ThemeText variant="secondary" style={{ color: theme.button }}>
-                Forgot Password?
+              <ThemeText variant="heading" style={styles.heading}>
+                Welcome Back
               </ThemeText>
+
+              <ThemeText variant="secondary" style={styles.subtitle}>
+                Login to your account and continue
+              </ThemeText>
+            </View>
+
+            <View style={styles.fields}>
+              <View style={styles.fieldGroup}>
+                <ThemeText style={styles.label}>Email Address</ThemeText>
+
+                <ThemeInput
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  value={email}
+                  onChangeText={setEmail}
+                />
+              </View>
+
+              <View style={styles.fieldGroup}>
+                <ThemeText style={styles.label}>Password</ThemeText>
+
+                <View style={styles.passwordContainer}>
+                  <ThemeInput
+                    placeholder="Enter your password"
+                    secureTextEntry={!showPassword}
+                    value={password}
+                    onChangeText={setPassword}
+                    style={styles.passwordInput}
+                  />
+
+                  <Pressable
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.showButton}
+                    hitSlop={10}
+                  >
+                    <ThemeText style={styles.showText}>
+                      {showPassword ? "Hide" : "Show"}
+                    </ThemeText>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+
+            <Pressable style={styles.forgot}>
+              <ThemeText style={styles.forgotText}>Forgot Password?</ThemeText>
             </Pressable>
 
-            {/* Login Button */}
-            <Pressable
-              onPress={handleLogin}
-              style={[styles.button, { backgroundColor: theme.button }]}
-            >
+            <ThemeButton onPress={handleLogin}>
               <ThemeText style={styles.buttonText}>Login</ThemeText>
-            </Pressable>
+            </ThemeButton>
 
-            {/* Register Link */}
             <View style={styles.footer}>
-              <ThemeText variant="secondary">Don't have an account?</ThemeText>
+              <ThemeText variant="secondary" style={styles.footerText}>
+                Don't have an account?
+              </ThemeText>
 
               <Link href="/register" asChild>
-                <Pressable>
-                  <ThemeText
-                    style={{
-                      color: theme.button,
-                      fontWeight: "bold",
-                      marginLeft: 5,
-                    }}
-                  >
-                    Sign Up
-                  </ThemeText>
+                <Pressable hitSlop={8}>
+                  <ThemeText style={styles.link}>Sign Up</ThemeText>
                 </Pressable>
               </Link>
             </View>
-          </ThemeCard>
 
-          {/* Bottom Text */}
-          <ThemeText variant="muted" style={styles.bottomText}>
-            By continuing, you agree to our Terms & Privacy Policy.
-          </ThemeText>
+            {/* Bottom text */}
+            <ThemeText variant="secondary" style={styles.bottomText}>
+              By continuing, you agree to our Terms & Privacy Policy.
+            </ThemeText>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </ThemeView>
@@ -156,43 +127,68 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  keyboardView: {
+    flex: 1,
+  },
+
   scrollContent: {
     flexGrow: 1,
     justifyContent: "center",
-    padding: 22,
+    paddingHorizontal: 24,
+    paddingVertical: 40,
+  },
+
+  form: {
+    width: "100%",
+    maxWidth: 440,
+    alignSelf: "center",
   },
 
   header: {
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 38,
   },
 
   logo: {
-    width: 65,
-    height: 65,
+    width: 64,
+    height: 64,
     borderRadius: 20,
+    backgroundColor: "#2563eb",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 22,
+    marginBottom: 24,
   },
 
   logoText: {
+    color: "#ffffff",
     fontSize: 30,
-    fontWeight: "bold",
-    color: "#0f172a",
+    fontWeight: "800",
+  },
+
+  heading: {
+    fontSize: 30,
+    fontWeight: "800",
+    textAlign: "center",
+    letterSpacing: -0.8,
   },
 
   subtitle: {
-    marginTop: 8,
+    fontSize: 15,
+    marginTop: 10,
+    textAlign: "center",
   },
 
-  card: {
-    padding: 22,
+  fields: {
+    gap: 22,
+  },
+
+  fieldGroup: {
+    gap: 10,
   },
 
   label: {
-    marginTop: 22,
-    marginBottom: 10,
+    fontSize: 15,
+    fontWeight: "600",
   },
 
   passwordContainer: {
@@ -201,42 +197,62 @@ const styles = StyleSheet.create({
   },
 
   passwordInput: {
-    paddingRight: 55,
+    paddingRight: 65,
   },
 
   showButton: {
     position: "absolute",
-    right: 14,
-    top: 15,
+    right: 16,
+    paddingVertical: 10,
     zIndex: 1,
+  },
+
+  showText: {
+    color: "#2563eb",
+    fontSize: 14,
+    fontWeight: "700",
   },
 
   forgot: {
     alignSelf: "flex-end",
-    marginBottom: 22,
+    marginTop: 18,
+    marginBottom: 24,
   },
 
-  button: {
-    height: 54,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
+  forgotText: {
+    color: "#2563eb",
+    fontSize: 14,
+    fontWeight: "600",
   },
 
   buttonText: {
     color: "#ffffff",
+    fontWeight: "700",
     fontSize: 16,
-    fontWeight: "bold",
   },
 
   footer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 25,
+    alignItems: "center",
+    marginTop: 30,
+    gap: 5,
+  },
+
+  footerText: {
+    fontSize: 14,
+  },
+
+  link: {
+    color: "#2563eb",
+    fontWeight: "700",
+    fontSize: 14,
   },
 
   bottomText: {
+    fontSize: 12,
     textAlign: "center",
-    marginTop: 25,
+    marginTop: 45,
+    lineHeight: 20,
   },
 });

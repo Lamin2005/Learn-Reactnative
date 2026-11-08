@@ -14,7 +14,7 @@ const Color = {
     background: "#0f172a",
     text: "#f1f5f9",
     border: "#334155",
-    button: "#0284c7",
+    button: "#2563eb",
   },
 };
 

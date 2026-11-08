@@ -11,6 +11,10 @@ const RootLayout = () => {
     <Stack
       screenOptions={{
         animation: "slide_from_right",
+        headerStyle: {
+          backgroundColor: theme.primary,
+        },
+        headerTintColor: theme.text,
       }}
     >
       {" "}

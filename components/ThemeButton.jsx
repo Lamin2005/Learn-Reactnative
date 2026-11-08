@@ -1,38 +1,24 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
+import { Pressable, StyleSheet, useColorScheme } from "react-native";
 
 import Color from "../constant/Color";
 
 const ThemeButton = ({
-  title,
   style,
-  textStyle,
-  disabled = false,
+
   ...prop
 }) => {
   const colorScheme = useColorScheme();
   const theme = Color[colorScheme] || Color.light;
 
   return (
-    <TouchableOpacity
-      style={[
+    <Pressable
+      style={({ pressed }) => [
         styles.button,
-        {
-          backgroundColor: theme.button,
-          opacity: disabled ? 0.5 : 1,
-        },
-        style,
+        { backgroundColor: theme.button },
+        pressed && styles.buttonPressed,
       ]}
-      disabled={disabled}
-      activeOpacity={0.7}
       {...prop}
-    >
-      <Text style={[styles.text, textStyle]}>{title}</Text>
-    </TouchableOpacity>
+    />
   );
 };
 
@@ -40,18 +26,22 @@ export default ThemeButton;
 
 const styles = StyleSheet.create({
   button: {
-    width: "100%",
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    alignItems: "center",
+    height: 56,
+    borderRadius: 14,
     justifyContent: "center",
-    elevation: 3,
+    alignItems: "center",
+    shadowColor: "#2563eb",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 4,
   },
 
-  text: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "bold",
+  buttonPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
   },
 });
