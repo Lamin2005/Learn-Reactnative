@@ -1,6 +1,6 @@
 const Color = {
   light: {
-    primary: "#4ecca3",
+    primary: "#0d98dd",
     secondary: "#393e46",
     background: "#f1f5f9",
     text: "#1e293b",

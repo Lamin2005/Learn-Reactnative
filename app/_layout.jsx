@@ -32,6 +32,13 @@ const RootLayout = () => {
       />
 
       <Stack.Screen
+        name="(dashboard)"
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
         name="about"
         options={{
           title: "About",
