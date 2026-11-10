@@ -1,23 +1,39 @@
 import { Tabs } from "expo-router";
+import { useColorScheme } from "react-native";
+import Color from "../../constant/Color";
+import { Ionicons } from "@expo/vector-icons";
 
 const TabLayout = () => {
+  const colorScheme = useColorScheme();
+  const theme = Color[colorScheme] || Color.light;
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#2563eb",
-        tabBarInactiveTintColor: "#94a3b8",
+
+        tabBarActiveTintColor: "#007AFF",
+        tabBarInactiveTintColor: "#8E8E93",
+
         tabBarStyle: {
-          height: 65,
-          paddingTop: 8,
-          paddingBottom: 8,
-          backgroundColor: "#ffffff",
-          borderTopWidth: 1,
-          borderTopColor: "#e2e8f0",
+          height: 100,
+          paddingTop: 20,
+          paddingBottom: 30,
+
+          backgroundColor: theme.tabBar,
+
+          borderTopWidth: 0,
+
+          elevation: 0,
         },
+
         tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: "600",
+          fontSize: 10,
+          fontWeight: "500",
+        },
+
+        tabBarIconStyle: {
+          marginBottom: 2,
         },
       }}
     >
@@ -26,6 +42,13 @@ const TabLayout = () => {
         options={{
           title: "Books",
           tabBarLabel: "Book Lists",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "book" : "book-outline"}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
 
@@ -34,6 +57,13 @@ const TabLayout = () => {
         options={{
           title: "Create",
           tabBarLabel: "Create Book",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "add-circle" : "add-circle-outline"}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
 
@@ -42,6 +72,13 @@ const TabLayout = () => {
         options={{
           title: "Profile",
           tabBarLabel: "Profile",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>

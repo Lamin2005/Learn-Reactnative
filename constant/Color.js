@@ -6,6 +6,7 @@ const Color = {
     text: "#1e293b",
     border: "#e2e8f0",
     button: "#0284c7",
+    tabBar: "#ffffff",
   },
 
   dark: {
@@ -15,6 +16,7 @@ const Color = {
     text: "#f1f5f9",
     border: "#334155",
     button: "#2563eb",
+    tabBar: "#1e293b",
   },
 };
 

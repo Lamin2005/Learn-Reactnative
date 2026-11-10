@@ -4,6 +4,7 @@ import { router } from "expo-router";
 
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
+import ThemeCard from "../../components/ThemeCard";
 
 const Profile = () => {
   return (
@@ -12,7 +13,7 @@ const Profile = () => {
         My Profile
       </ThemeText>
 
-      <View style={styles.profileCard}>
+      <ThemeCard style={styles.profileCard}>
         <View style={styles.avatar}>
           <ThemeText style={styles.avatarText}>L</ThemeText>
         </View>
@@ -22,9 +23,9 @@ const Profile = () => {
         </ThemeText>
 
         <ThemeText variant="secondary">laminhein@gmail.com</ThemeText>
-      </View>
+      </ThemeCard>
 
-      <View style={styles.infoCard}>
+      <ThemeCard style={styles.infoCard}>
         <View style={styles.infoRow}>
           <ThemeText variant="secondary">Full Name</ThemeText>
           <ThemeText style={styles.infoValue}>La Min Hein</ThemeText>
@@ -36,7 +37,7 @@ const Profile = () => {
           <ThemeText variant="secondary">Email</ThemeText>
           <ThemeText style={styles.infoValue}>laminhein@gmail.com</ThemeText>
         </View>
-      </View>
+      </ThemeCard>
 
       <Pressable
         style={styles.logoutButton}
@@ -64,7 +65,6 @@ const styles = StyleSheet.create({
   profileCard: {
     alignItems: "center",
     padding: 25,
-    backgroundColor: "#ffffff",
     borderRadius: 15,
     elevation: 2,
   },
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   infoCard: {
-    backgroundColor: "#ffffff",
     borderRadius: 12,
     padding: 18,
     marginTop: 25,
@@ -104,7 +103,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#e2e8f0",
     marginVertical: 8,
   },
   logoutButton: {
