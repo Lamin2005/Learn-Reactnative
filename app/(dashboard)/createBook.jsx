@@ -26,7 +26,7 @@ const CreateBook = () => {
   };
 
   return (
-    <ThemeView style={styles.container}>
+    <ThemeView style={styles.container} safe={true}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <ThemeText variant="heading" style={styles.title}>
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 60,
   },
   header: {
     marginBottom: 30,

@@ -8,7 +8,7 @@ import ThemeCard from "../../components/ThemeCard";
 
 const Profile = () => {
   return (
-    <ThemeView style={styles.container}>
+    <ThemeView style={styles.container} safe={true}>
       <ThemeText variant="heading" style={styles.title}>
         My Profile
       </ThemeText>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 60,
+    // paddingTop: 60,
   },
   title: {
     fontSize: 26,

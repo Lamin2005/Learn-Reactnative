@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Stack } from "expo-router";
 import { useColorScheme } from "react-native";
 import Color from "../constant/Color";
+import "react-native-url-polyfill/auto";
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();
