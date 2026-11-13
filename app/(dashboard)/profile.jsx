@@ -5,8 +5,21 @@ import { router } from "expo-router";
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
 import ThemeCard from "../../components/ThemeCard";
+import { useUser } from "../../hooks/useUser";
 
 const Profile = () => {
+  const { user, logout } = useUser();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      alert("You have been logged out.");
+      router.replace("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <ThemeView style={styles.container} safe={true}>
       <ThemeText variant="heading" style={styles.title}>
@@ -19,30 +32,27 @@ const Profile = () => {
         </View>
 
         <ThemeText variant="title" style={styles.name}>
-          La Min Hein
+          {user?.name}
         </ThemeText>
 
-        <ThemeText variant="secondary">laminhein@gmail.com</ThemeText>
+        <ThemeText variant="secondary">{user?.email}</ThemeText>
       </ThemeCard>
 
       <ThemeCard style={styles.infoCard}>
         <View style={styles.infoRow}>
           <ThemeText variant="secondary">Full Name</ThemeText>
-          <ThemeText style={styles.infoValue}>La Min Hein</ThemeText>
+          <ThemeText style={styles.infoValue}>{user?.name}</ThemeText>
         </View>
 
         <View style={styles.divider} />
 
         <View style={styles.infoRow}>
           <ThemeText variant="secondary">Email</ThemeText>
-          <ThemeText style={styles.infoValue}>laminhein@gmail.com</ThemeText>
+          <ThemeText style={styles.infoValue}>{user?.email}</ThemeText>
         </View>
       </ThemeCard>
 
-      <Pressable
-        style={styles.logoutButton}
-        onPress={() => router.replace("/")}
-      >
+      <Pressable style={styles.logoutButton} onPress={handleLogout}>
         <ThemeText style={styles.logoutText}>Logout</ThemeText>
       </Pressable>
     </ThemeView>

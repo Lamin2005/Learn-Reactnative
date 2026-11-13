@@ -18,6 +18,9 @@ import ThemeInput from "../../components/ThemeInput";
 
 import Color from "../../constant/Color";
 
+import { useUser } from "../../hooks/useUser";
+import { router } from "expo-router";
+
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,22 +34,13 @@ export default function Register() {
 
   const colorScheme = useColorScheme();
   const theme = Color[colorScheme] || Color.light;
+  const { register, isLoading } = useUser();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     setError("");
 
-    if (!name.trim() || !email.trim() || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError("Please fill in all fields.");
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
       return;
     }
 
@@ -55,11 +49,21 @@ export default function Register() {
       return;
     }
 
-    console.log({ name, email, password });
+    try {
+      await register({ name, email, password });
+      alert("Registration successful! You are now logged in.");
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      router.replace("/dashboard");
+    } catch (err) {
+      setError(err.message || "An error occurred during registration.");
+    }
   };
 
   return (
-    <ThemeView style={styles.container}>
+    <ThemeView style={styles.container} safe={true}>
       <KeyboardAvoidingView
         style={styles.keyboardView}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -196,7 +200,9 @@ export default function Register() {
                 pressed && styles.buttonPressed,
               ]}
             >
-              <ThemeText style={styles.buttonText}>Create Account</ThemeText>
+              <ThemeText style={styles.buttonText}>
+                {isLoading ? "Creating account..." : "Create Account"}
+              </ThemeText>
             </ThemeButton>
 
             <View style={styles.footer}>

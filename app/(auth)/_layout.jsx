@@ -17,17 +17,18 @@ const RootLayout = () => {
         headerTintColor: theme.text,
       }}
     >
-      {" "}
       <Stack.Screen
         name="login"
         options={{
           animation: "fade",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="register"
         options={{
           animation: "slide_from_right",
+          headerShown: false,
         }}
       />
     </Stack>

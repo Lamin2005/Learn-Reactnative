@@ -1,76 +1,91 @@
-import { createContext, useContext, useEffect, useState } from "react";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createContext, useState } from "react";
+import { account } from "../lib/appwrite";
+import { ID } from "react-native-appwrite";
 
-const UserContext = createContext(null);
-
-const USER_STORAGE_KEY = "book_app_user";
+export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Restore user when app starts
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const storedUser = await AsyncStorage.getItem(USER_STORAGE_KEY);
-
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        }
-      } catch (error) {
-        console.log("Failed to load user:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadUser();
-  }, []);
-
-  // Login / Set user
+  // Login
   const login = async (userData) => {
     try {
-      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+      setIsLoading(true);
 
-      setUser(userData);
+      await account.createEmailPasswordSession({
+        email: userData.email,
+        password: userData.password,
+      });
+
+      const userDetails = await account.get();
+
+      setUser(userDetails);
+
+      return userDetails;
     } catch (error) {
-      console.log("Login error:", error);
+      console.log("Login Error:", error.message);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Register / Set user
+  // Register
   const register = async (userData) => {
-    await login(userData);
+    try {
+      setIsLoading(true);
+
+      await account.create({
+        userId: ID.unique(),
+        email: userData.email,
+        password: userData.password,
+        name: userData.name,
+      });
+
+      // Automatically login after registration
+      await account.createEmailPasswordSession({
+        email: userData.email,
+        password: userData.password,
+      });
+
+      const userDetails = await account.get();
+
+      setUser(userDetails);
+
+      return userDetails;
+    } catch (error) {
+      console.log("Registration Error:", error.message);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Update user information
+  // Update user
   const updateUser = async (updatedData) => {
-    try {
-      const newUser = {
-        ...user,
-        ...updatedData,
-      };
-
-      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
-
-      setUser(newUser);
-    } catch (error) {
-      console.log("Update user error:", error);
-      throw error;
-    }
+    setUser((prev) => ({
+      ...prev,
+      ...updatedData,
+    }));
   };
 
   // Logout
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem(USER_STORAGE_KEY);
+      setIsLoading(true);
+
+      await account.deleteSession({
+        sessionId: "current",
+      });
+
       setUser(null);
     } catch (error) {
-      console.log("Logout error:", error);
+      console.log("Logout Error:", error.message);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -84,16 +99,9 @@ export const UserProvider = ({ children }) => {
     updateUser,
   };
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-};
-
-// Custom hook
-export const useUser = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error("useUser must be used inside UserProvider");
-  }
-
-  return context;
+  return (
+    <UserContext.Provider value={value}>
+      {children}
+    </UserContext.Provider>
+  );
 };

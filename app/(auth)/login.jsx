@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  Alert,
 } from "react-native";
 
 import { Link } from "expo-router";
@@ -15,15 +16,26 @@ import ThemeText from "../../components/ThemeText";
 import ThemeInput from "../../components/ThemeInput";
 import ThemeButton from "../../components/ThemeButton";
 
+import { useUser } from "../../hooks/useUser";
+import { router } from "expo-router";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleLogin = () => {
+  const { user, login, isLoading } = useUser();
+  const handleLogin = async () => {
     if (!email || !password) return;
-
-    console.log({ email, password });
+    try {
+      await login({ email, password });
+      alert("Login successful! You are now logged in.");
+      console.log("Logged in user:", user);
+      setEmail("");
+      setPassword("");
+      router.replace("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -96,7 +108,9 @@ export default function Login() {
             </Pressable>
 
             <ThemeButton onPress={handleLogin}>
-              <ThemeText style={styles.buttonText}>Login</ThemeText>
+              <ThemeText style={styles.buttonText}>
+                {isLoading ? "Logging in..." : "Login"}
+              </ThemeText>
             </ThemeButton>
 
             <View style={styles.footer}>

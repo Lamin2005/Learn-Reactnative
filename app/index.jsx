@@ -669,44 +669,51 @@ import { Link } from "expo-router";
 import booklogo from "../assets/img/booklogo.png";
 import ThemeView from "../components/ThemeView";
 import ThemeText from "../components/ThemeText";
+import { useUser } from "../hooks/useUser";
 
 const Home = () => {
+
+  const { user } = useUser();
+  console.log("User in Home:", user);
+
   return (
-    <ThemeView style={styles.container}>
-      <View style={styles.content}>
-        <ThemeText variant="heading" style={styles.logo}>
-          BookSpace
-        </ThemeText>
+    
+      <ThemeView style={styles.container}>
+        <View style={styles.content}>
+          <ThemeText variant="heading" style={styles.logo}>
+            BookSpace
+          </ThemeText>
 
-        <Image source={booklogo} style={styles.image} resizeMode="contain" />
+          <Image source={booklogo} style={styles.image} resizeMode="contain" />
 
-        <ThemeText variant="heading" style={styles.title}>
-          Welcome to BookSpace
-        </ThemeText>
+          <ThemeText variant="heading" style={styles.title}>
+            Welcome to BookSpace
+          </ThemeText>
 
-        <ThemeText variant="secondary" style={styles.description}>
-          Discover your favorite books and enjoy reading anytime, anywhere.
-        </ThemeText>
+          <ThemeText variant="secondary" style={styles.description}>
+            Discover your favorite books and enjoy reading anytime, anywhere.
+          </ThemeText>
 
-        <Link href="/login" asChild>
-          <Pressable style={styles.loginButton}>
-            <ThemeText style={styles.loginText}>Login</ThemeText>
-          </Pressable>
-        </Link>
+          <Link href="/login" asChild>
+            <Pressable style={styles.loginButton}>
+              <ThemeText style={styles.loginText}>Login</ThemeText>
+            </Pressable>
+          </Link>
 
-        <Link href="/register" asChild>
-          <Pressable style={styles.registerButton}>
-            <ThemeText style={styles.registerText}>Create Account</ThemeText>
-          </Pressable>
-        </Link>
+          <Link href="/register" asChild>
+            <Pressable style={styles.registerButton}>
+              <ThemeText style={styles.registerText}>Create Account</ThemeText>
+            </Pressable>
+          </Link>
 
-        <Link href="/profile" asChild>
-          <Pressable style={styles.registerButton}>
-            <ThemeText style={styles.registerText}>View Profile</ThemeText>
-          </Pressable>
-        </Link>
-      </View>
-    </ThemeView>
+          <Link href="/profile" asChild>
+            <Pressable style={styles.registerButton}>
+              <ThemeText style={styles.registerText}>View Profile</ThemeText>
+            </Pressable>
+          </Link>
+        </View>
+      </ThemeView>
+    
   );
 };
 
