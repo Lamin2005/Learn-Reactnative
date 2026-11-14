@@ -1,13 +1,30 @@
-
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { account } from "../lib/appwrite";
 import { ID } from "react-native-appwrite";
+import { router } from "expo-router";
 
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setIsLoading(true);
+        const userDetails = await account.get();
+        setUser(userDetails);
+        router.replace("/bookLists");
+      } catch (error) {
+        console.log("Error fetching user:", error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   // Login
   const login = async (userData) => {
@@ -22,8 +39,6 @@ export const UserProvider = ({ children }) => {
       const userDetails = await account.get();
 
       setUser(userDetails);
-
-      return userDetails;
     } catch (error) {
       console.log("Login Error:", error.message);
       throw error;
@@ -53,8 +68,6 @@ export const UserProvider = ({ children }) => {
       const userDetails = await account.get();
 
       setUser(userDetails);
-
-      return userDetails;
     } catch (error) {
       console.log("Registration Error:", error.message);
       throw error;
@@ -99,9 +112,5 @@ export const UserProvider = ({ children }) => {
     updateUser,
   };
 
-  return (
-    <UserContext.Provider value={value}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

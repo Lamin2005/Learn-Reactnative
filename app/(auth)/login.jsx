@@ -24,17 +24,21 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { user, login, isLoading } = useUser();
+
   const handleLogin = async () => {
     if (!email || !password) return;
     try {
       await login({ email, password });
       alert("Login successful! You are now logged in.");
-      console.log("Logged in user:", user);
+      router.replace("/bookLists");
+    } catch (error) {
+      Alert.alert(
+        "Login Error",
+        error.message || "An error occurred during login.",
+      );
+    } finally {
       setEmail("");
       setPassword("");
-      router.replace("/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error);
     }
   };
 

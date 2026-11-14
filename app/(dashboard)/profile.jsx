@@ -8,7 +8,7 @@ import ThemeCard from "../../components/ThemeCard";
 import { useUser } from "../../hooks/useUser";
 
 const Profile = () => {
-  const { user, logout } = useUser();
+  const { user, logout, isLoading } = useUser();
 
   const handleLogout = async () => {
     try {
@@ -32,23 +32,25 @@ const Profile = () => {
         </View>
 
         <ThemeText variant="title" style={styles.name}>
-          {user?.name}
+          {isLoading ? "Loading..." : user?.name || "Guest User"}
         </ThemeText>
 
-        <ThemeText variant="secondary">{user?.email}</ThemeText>
+        <ThemeText variant="secondary">
+          {isLoading ? "Loading..." : user?.email || "No email available"}
+        </ThemeText>
       </ThemeCard>
 
       <ThemeCard style={styles.infoCard}>
         <View style={styles.infoRow}>
           <ThemeText variant="secondary">Full Name</ThemeText>
-          <ThemeText style={styles.infoValue}>{user?.name}</ThemeText>
+          <ThemeText style={styles.infoValue}>{isLoading ? "Loading..." : user?.name || "Guest User"}</ThemeText>
         </View>
 
         <View style={styles.divider} />
 
         <View style={styles.infoRow}>
           <ThemeText variant="secondary">Email</ThemeText>
-          <ThemeText style={styles.infoValue}>{user?.email}</ThemeText>
+          <ThemeText style={styles.infoValue}>{isLoading ? "Loading..." : user?.email || "No email available"}</ThemeText>
         </View>
       </ThemeCard>
 

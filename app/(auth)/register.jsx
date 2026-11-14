@@ -52,13 +52,15 @@ export default function Register() {
     try {
       await register({ name, email, password });
       alert("Registration successful! You are now logged in.");
+     
+      router.replace("/bookLists");
+    } catch (err) {
+      setError(err.message || "An error occurred during registration.");
+    }finally {
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      router.replace("/dashboard");
-    } catch (err) {
-      setError(err.message || "An error occurred during registration.");
     }
   };
 
