@@ -333,7 +333,7 @@
 //   header: {
 //     flexDirection: "row",
 //     alignItems: "center",
-//     justifyContent: "space-between",
+//     justifyContent: "App-between",
 //     marginBottom: 30,
 //   },
 
@@ -405,7 +405,7 @@
 
 //   sectionHeader: {
 //     flexDirection: "row",
-//     justifyContent: "space-between",
+//     justifyContent: "App-between",
 //     alignItems: "center",
 //     marginBottom: 15,
 //   },
@@ -576,7 +576,7 @@
 
 //   progressHeader: {
 //     flexDirection: "row",
-//     justifyContent: "space-between",
+//     justifyContent: "App-between",
 //     marginTop: 15,
 //     marginBottom: 7,
 //   },
@@ -607,7 +607,7 @@
 //   bookGrid: {
 //     flexDirection: "row",
 //     flexWrap: "wrap",
-//     justifyContent: "space-between",
+//     justifyContent: "App-between",
 //     rowGap: 22,
 //   },
 
@@ -670,50 +670,46 @@ import booklogo from "../assets/img/booklogo.png";
 import ThemeView from "../components/ThemeView";
 import ThemeText from "../components/ThemeText";
 import { useUser } from "../hooks/useUser";
+import Loading from "../components/Loading";
 
 const Home = () => {
-
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   console.log("User in Home:", user);
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    
-      <ThemeView style={styles.container}>
-        <View style={styles.content}>
-          <ThemeText variant="heading" style={styles.logo}>
-            BookSpace
-          </ThemeText>
+    <ThemeView style={styles.container}>
+      <View style={styles.content}>
+        <ThemeText variant="heading" style={styles.logo}>
+          BookApp
+        </ThemeText>
 
-          <Image source={booklogo} style={styles.image} resizeMode="contain" />
+        <Image source={booklogo} style={styles.image} resizeMode="contain" />
 
-          <ThemeText variant="heading" style={styles.title}>
-            Welcome to BookSpace
-          </ThemeText>
+        <ThemeText variant="heading" style={styles.title}>
+          Welcome to BookApp
+        </ThemeText>
 
-          <ThemeText variant="secondary" style={styles.description}>
-            Discover your favorite books and enjoy reading anytime, anywhere.
-          </ThemeText>
+        <ThemeText variant="secondary" style={styles.description}>
+          Discover your favorite books and enjoy reading anytime, anywhere.
+        </ThemeText>
 
-          <Link href="/login" asChild>
-            <Pressable style={styles.loginButton}>
-              <ThemeText style={styles.loginText}>Login</ThemeText>
-            </Pressable>
-          </Link>
+        <Link href="/login" asChild>
+          <Pressable style={styles.loginButton}>
+            <ThemeText style={styles.loginText}>Login</ThemeText>
+          </Pressable>
+        </Link>
 
-          <Link href="/register" asChild>
-            <Pressable style={styles.registerButton}>
-              <ThemeText style={styles.registerText}>Create Account</ThemeText>
-            </Pressable>
-          </Link>
-
-          <Link href="/profile" asChild>
-            <Pressable style={styles.registerButton}>
-              <ThemeText style={styles.registerText}>View Profile</ThemeText>
-            </Pressable>
-          </Link>
-        </View>
-      </ThemeView>
-    
+        <Link href="/register" asChild>
+          <Pressable style={styles.registerButton}>
+            <ThemeText style={styles.registerText}>Create Account</ThemeText>
+          </Pressable>
+        </Link>
+      </View>
+    </ThemeView>
   );
 };
 

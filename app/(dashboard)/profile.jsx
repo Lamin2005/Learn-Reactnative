@@ -1,7 +1,5 @@
 import { StyleSheet, View, Pressable } from "react-native";
 
-import { router } from "expo-router";
-
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
 import ThemeCard from "../../components/ThemeCard";
@@ -14,7 +12,6 @@ const Profile = () => {
     try {
       await logout();
       alert("You have been logged out.");
-      router.replace("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -43,14 +40,18 @@ const Profile = () => {
       <ThemeCard style={styles.infoCard}>
         <View style={styles.infoRow}>
           <ThemeText variant="secondary">Full Name</ThemeText>
-          <ThemeText style={styles.infoValue}>{isLoading ? "Loading..." : user?.name || "Guest User"}</ThemeText>
+          <ThemeText style={styles.infoValue}>
+            {isLoading ? "Loading..." : user?.name || "Guest User"}
+          </ThemeText>
         </View>
 
         <View style={styles.divider} />
 
         <View style={styles.infoRow}>
           <ThemeText variant="secondary">Email</ThemeText>
-          <ThemeText style={styles.infoValue}>{isLoading ? "Loading..." : user?.email || "No email available"}</ThemeText>
+          <ThemeText style={styles.infoValue}>
+            {isLoading ? "Loading..." : user?.email || "No email available"}
+          </ThemeText>
         </View>
       </ThemeCard>
 

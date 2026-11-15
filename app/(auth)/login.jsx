@@ -23,7 +23,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { user, login, isLoading } = useUser();
+  const { login, isLoading } = useUser();
 
   const handleLogin = async () => {
     if (!email || !password) return;

@@ -10,7 +10,7 @@ const ThemeCard = ({ style, ...prop }) => {
       style={[
         styles.card,
         {
-          backgroundColor: theme.secondary,
+          backgroundColor: theme.background,
           borderColor: theme.border,
         },
         style,

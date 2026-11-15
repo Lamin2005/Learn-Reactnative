@@ -1,13 +1,8 @@
-
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  Pressable,
-} from "react-native";
+import { StyleSheet, View, FlatList, Pressable } from "react-native";
 
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
+import ThemeCard from "../../components/ThemeCard";
 
 const books = [
   {
@@ -44,9 +39,7 @@ const BookLists = () => {
           My Books
         </ThemeText>
 
-        <ThemeText variant="secondary">
-          Manage your favorite books
-        </ThemeText>
+        <ThemeText variant="secondary">Manage your favorite books</ThemeText>
       </View>
 
       <FlatList
@@ -55,29 +48,29 @@ const BookLists = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
-          <Pressable style={styles.bookCard}>
-            <View style={styles.bookCover}>
-              <ThemeText style={styles.coverText}>
-                {item.title.charAt(0)}
-              </ThemeText>
-            </View>
-
-            <View style={styles.bookInfo}>
-              <ThemeText variant="title" style={styles.bookTitle}>
-                {item.title}
-              </ThemeText>
-
-              <ThemeText variant="secondary">
-                {item.author}
-              </ThemeText>
-
-              <View style={styles.category}>
-                <ThemeText style={styles.categoryText}>
-                  {item.category}
+          <ThemeCard>
+            <Pressable style={styles.bookCard}>
+              <View style={styles.bookCover}>
+                <ThemeText style={styles.coverText}>
+                  {item.title.charAt(0)}
                 </ThemeText>
               </View>
-            </View>
-          </Pressable>
+
+              <View style={styles.bookInfo}>
+                <ThemeText variant="title" style={styles.bookTitle}>
+                  {item.title}
+                </ThemeText>
+
+                <ThemeText variant="secondary">{item.author}</ThemeText>
+
+                <View style={styles.category}>
+                  <ThemeText style={styles.categoryText}>
+                    {item.category}
+                  </ThemeText>
+                </View>
+              </View>
+            </Pressable>
+          </ThemeCard>
         )}
       />
     </ThemeView>
@@ -90,7 +83,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-  
   },
   header: {
     marginBottom: 25,
@@ -107,9 +99,7 @@ const styles = StyleSheet.create({
   bookCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ffffff",
     padding: 12,
-    borderRadius: 14,
     gap: 15,
     elevation: 2,
   },

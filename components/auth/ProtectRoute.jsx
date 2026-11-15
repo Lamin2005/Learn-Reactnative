@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { router } from "expo-router";
-import { useUser } from "../hooks/useUser";
+import { useUser } from "../../hooks/useUser";
+import Loading from "../../components/Loading";
 
 const ProtectRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useUser();
@@ -12,7 +13,7 @@ const ProtectRoute = ({ children }) => {
   }, [isLoading, isAuthenticated]);
 
   if (isLoading || !isAuthenticated) {
-    return null;
+    return <Loading />;
   }
 
   return children;
