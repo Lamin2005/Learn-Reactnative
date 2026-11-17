@@ -21,16 +21,26 @@ const CreateBook = () => {
 
   const handleSubmit = async () => {
     try {
+      if (!title.trim() || !author.trim() || !category.trim()) {
+        alert("Please fill in required fields");
+        return;
+      }
+
       const book = await addBook({
-        title,
-        author,
-        category,
-        description,
+        title: title.trim(),
+        author: author.trim(),
+        category: category.trim(),
+        description: description.trim(),
       });
 
       console.log("Created Book:", book);
     } catch (error) {
-      console.log(error);
+      console.log("Create Book Error:", error);
+    } finally {
+      setTitle("");
+      setAuthor("");
+      setCategory("");
+      setDescription("");
     }
   };
 
