@@ -10,6 +10,7 @@ const TabLayout = () => {
 
   return (
     <ProtectRoute>
+     
       <Tabs
         screenOptions={{
           headerShown: false,
@@ -84,6 +85,7 @@ const TabLayout = () => {
           }}
         />
       </Tabs>
+     
     </ProtectRoute>
   );
 };

@@ -9,6 +9,7 @@ import {
 
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
+import { useBooks } from "../../hooks/useBook";
 
 const CreateBook = () => {
   const [title, setTitle] = useState("");
@@ -16,13 +17,21 @@ const CreateBook = () => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = () => {
-    console.log({
-      title,
-      author,
-      category,
-      description,
-    });
+  const { addBook, isLoading } = useBooks();
+
+  const handleSubmit = async () => {
+    try {
+      const book = await addBook({
+        title,
+        author,
+        category,
+        description,
+      });
+
+      console.log("Created Book:", book);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -74,7 +83,10 @@ const CreateBook = () => {
           />
 
           <Pressable style={styles.button} onPress={handleSubmit}>
-            <ThemeText style={styles.buttonText}>Add Book</ThemeText>
+            <ThemeText style={styles.buttonText}>
+              {" "}
+              {isLoading ? "Adding Book..." : "Add Book"}
+            </ThemeText>
           </Pressable>
         </View>
       </ScrollView>

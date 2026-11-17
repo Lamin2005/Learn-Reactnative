@@ -4,6 +4,8 @@ import { useColorScheme } from "react-native";
 import Color from "../constant/Color";
 import "react-native-url-polyfill/auto";
 import { UserProvider } from "../context/UserContext";
+import { BookProvider } from "../context/BookContext";
+
 
 const RootLayout = () => {
   const colorScheme = useColorScheme();
@@ -11,6 +13,7 @@ const RootLayout = () => {
 
   return (
     <UserProvider>
+      <BookProvider>
       <Stack
         screenOptions={{
           headerStyle: {
@@ -48,6 +51,7 @@ const RootLayout = () => {
           }}
         />
       </Stack>
+      </BookProvider>
     </UserProvider>
   );
 };

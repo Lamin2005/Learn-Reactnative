@@ -1,0 +1,97 @@
+import { createContext, useEffect, useState } from "react";
+
+import {
+  getBooks,
+  createBook,
+  //   updateBook,
+  //   deleteBook,
+} from "../services/bookService";
+
+export const BookContext = createContext(null);
+
+export const BookProvider = ({ children }) => {
+  const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Get Books
+  const fetchBooks = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const data = await getBooks();
+
+      setBooks(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Add Book
+  const addBook = async (bookData) => {
+    try {
+      const newBook = await createBook(bookData);
+
+      setBooks((prev) => [newBook, ...prev]);
+      return newBook;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  // Edit Book
+  //   const editBook = async (bookId, bookData) => {
+  //     try {
+  //       const updatedBook = await updateBook(bookId, bookData);
+
+  //       setBooks((prev) =>
+  //         prev.map((book) =>
+  //           book.$id === bookId ? updatedBook : book
+  //         )
+  //       );
+
+  //       return updatedBook;
+  //     } catch (error) {
+  //       console.log(error);
+  //       throw error;
+  //     }
+  //   };
+
+  // Remove Book
+  //   const removeBook = async (bookId) => {
+  //     try {
+  //       await deleteBook(bookId);
+
+  //       setBooks((prev) =>
+  //         prev.filter((book) => book.$id !== bookId)
+  //       );
+  //     } catch (error) {
+  //       console.log(error);
+  //       throw error;
+  //     }
+  //   };
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  return (
+    <BookContext.Provider
+      value={{
+        books,
+        isLoading,
+        error,
+        fetchBooks,
+        addBook,
+        // editBook,
+        // removeBook,
+      }}
+    >
+      {children}
+    </BookContext.Provider>
+  );
+};
