@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useUser } from "../hooks/useUser";
 
 import {
   getBooks,
@@ -13,6 +14,7 @@ export const BookProvider = ({ children }) => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { user } = useUser();
 
   // Get Books
   const fetchBooks = async () => {
@@ -33,6 +35,7 @@ export const BookProvider = ({ children }) => {
   // Add Book
   const addBook = async (bookData) => {
     try {
+      setIsLoading(true);
       const newBook = await createBook(bookData);
 
       setBooks((prev) => [newBook, ...prev]);
@@ -40,6 +43,8 @@ export const BookProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -76,8 +81,12 @@ export const BookProvider = ({ children }) => {
   //   };
 
   useEffect(() => {
-    fetchBooks();
-  }, []);
+    if (user) {
+      fetchBooks();
+    } else {
+      setBooks([]);
+    }
+  }, [user]);
 
   return (
     <BookContext.Provider

@@ -3,35 +3,11 @@ import { StyleSheet, View, FlatList, Pressable } from "react-native";
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
 import ThemeCard from "../../components/ThemeCard";
-
-const books = [
-  {
-    id: "1",
-    title: "Atomic Habits",
-    author: "James Clear",
-    category: "Self Development",
-  },
-  {
-    id: "2",
-    title: "Clean Code",
-    author: "Robert C. Martin",
-    category: "Technology",
-  },
-  {
-    id: "3",
-    title: "The Alchemist",
-    author: "Paulo Coelho",
-    category: "Fiction",
-  },
-  {
-    id: "4",
-    title: "Rich Dad Poor Dad",
-    author: "Robert Kiyosaki",
-    category: "Business",
-  },
-];
+import { useBooks } from "../../hooks/useBook";
 
 const BookLists = () => {
+  const { books, isLoading } = useBooks();
+
   return (
     <ThemeView style={styles.container} safe={true}>
       <View style={styles.header}>
@@ -42,37 +18,50 @@ const BookLists = () => {
         <ThemeText variant="secondary">Manage your favorite books</ThemeText>
       </View>
 
-      <FlatList
-        data={books}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <ThemeCard>
-            <Pressable style={styles.bookCard}>
-              <View style={styles.bookCover}>
-                <ThemeText style={styles.coverText}>
-                  {item.title.charAt(0)}
-                </ThemeText>
-              </View>
+      {isLoading && <ThemeText>Loading...</ThemeText>}
 
-              <View style={styles.bookInfo}>
-                <ThemeText variant="title" style={styles.bookTitle}>
-                  {item.title}
-                </ThemeText>
+      {!isLoading && (
+        <FlatList
+          data={books}
+          keyExtractor={(item) => item.$id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.list}
+          ListEmptyComponent={
+            <View style={styles.empty}>
+              <ThemeText variant="title">No Books Found</ThemeText>
 
-                <ThemeText variant="secondary">{item.author}</ThemeText>
-
-                <View style={styles.category}>
-                  <ThemeText style={styles.categoryText}>
-                    {item.category}
+              <ThemeText variant="secondary">
+                Start adding your favorite books.
+              </ThemeText>
+            </View>
+          }
+          renderItem={({ item }) => (
+            <ThemeCard>
+              <Pressable style={styles.bookCard}>
+                <View style={styles.bookCover}>
+                  <ThemeText style={styles.coverText}>
+                    {item.title?.charAt(0)?.toUpperCase() || "D"}
                   </ThemeText>
                 </View>
-              </View>
-            </Pressable>
-          </ThemeCard>
-        )}
-      />
+
+                <View style={styles.bookInfo}>
+                  <ThemeText variant="title" style={styles.bookTitle}>
+                    {item.title}
+                  </ThemeText>
+
+                  <ThemeText variant="secondary">{item.author}</ThemeText>
+
+                  <View style={styles.category}>
+                    <ThemeText style={styles.categoryText}>
+                      {item.category}
+                    </ThemeText>
+                  </View>
+                </View>
+              </Pressable>
+            </ThemeCard>
+          )}
+        />
+      )}
     </ThemeView>
   );
 };

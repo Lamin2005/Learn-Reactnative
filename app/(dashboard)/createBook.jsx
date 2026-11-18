@@ -10,6 +10,7 @@ import {
 import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
 import { useBooks } from "../../hooks/useBook";
+import { router } from "expo-router";
 
 const CreateBook = () => {
   const [title, setTitle] = useState("");
@@ -21,7 +22,12 @@ const CreateBook = () => {
 
   const handleSubmit = async () => {
     try {
-      if (!title.trim() || !author.trim() || !category.trim()) {
+      if (
+        !title.trim() ||
+        !author.trim() ||
+        !category.trim() ||
+        !description.trim()
+      ) {
         alert("Please fill in required fields");
         return;
       }
@@ -34,6 +40,8 @@ const CreateBook = () => {
       });
 
       console.log("Created Book:", book);
+      router.replace("/bookLists");
+      alert("Successfull Created Book ");
     } catch (error) {
       console.log("Create Book Error:", error);
     } finally {
@@ -94,8 +102,7 @@ const CreateBook = () => {
 
           <Pressable style={styles.button} onPress={handleSubmit}>
             <ThemeText style={styles.buttonText}>
-              {" "}
-              {isLoading ? "Adding Book..." : "Add Book"}
+              {isLoading ? "Creating Book..." : "Create Book"}
             </ThemeText>
           </Pressable>
         </View>
