@@ -4,8 +4,8 @@ import { useUser } from "../hooks/useUser";
 import {
   getBooks,
   createBook,
-  //   updateBook,
-  //   deleteBook,
+  updateBook,
+  deleteBook,
 } from "../services/bookService";
 
 export const BookContext = createContext(null);
@@ -48,36 +48,32 @@ export const BookProvider = ({ children }) => {
   };
 
   // Edit Book
-  //   const editBook = async (bookId, bookData) => {
-  //     try {
-  //       const updatedBook = await updateBook(bookId, bookData);
+  const editBook = async (bookId, bookData) => {
+    try {
+      const updatedBook = await updateBook(bookId, bookData);
 
-  //       setBooks((prev) =>
-  //         prev.map((book) =>
-  //           book.$id === bookId ? updatedBook : book
-  //         )
-  //       );
+      setBooks((prev) =>
+        prev.map((book) => (book.$id === bookId ? updatedBook : book)),
+      );
 
-  //       return updatedBook;
-  //     } catch (error) {
-  //       console.log(error);
-  //       throw error;
-  //     }
-  //   };
+      return updatedBook;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   // Remove Book
-  //   const removeBook = async (bookId) => {
-  //     try {
-  //       await deleteBook(bookId);
+  const removeBook = async (bookId) => {
+    try {
+      await deleteBook(bookId);
 
-  //       setBooks((prev) =>
-  //         prev.filter((book) => book.$id !== bookId)
-  //       );
-  //     } catch (error) {
-  //       console.log(error);
-  //       throw error;
-  //     }
-  //   };
+      setBooks((prev) => prev.filter((book) => book.$id !== bookId));
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -95,8 +91,8 @@ export const BookProvider = ({ children }) => {
         error,
         fetchBooks,
         addBook,
-        // editBook,
-        // removeBook,
+        editBook,
+        removeBook,
       }}
     >
       {children}

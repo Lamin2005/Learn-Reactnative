@@ -60,7 +60,10 @@ const CreateBook = () => {
             Create Book
           </ThemeText>
 
-          <ThemeText variant="secondary">
+          <ThemeText
+            variant="secondary"
+            style={{ fontSize: 20, fontWeight: "lighter" }}
+          >
             Add a new book to your collection.
           </ThemeText>
         </View>

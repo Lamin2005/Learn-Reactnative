@@ -7,7 +7,16 @@ import { useBooks } from "../../hooks/useBook";
 import { BookSkeletonList } from "../../components/BookSkeleton";
 
 const BookLists = () => {
-  const { books, isLoading } = useBooks();
+  const { books, isLoading, removeBook } = useBooks();
+
+  const handleDelete = async (bookId) => {
+    try {
+      await removeBook(bookId);
+      alert("Success", "Book deleted successfully");
+    } catch (error) {
+      alert("Error", "Failed to delete book");
+    }
+  };
 
   return (
     <ThemeView style={styles.container} safe={true}>
@@ -16,7 +25,12 @@ const BookLists = () => {
           My Books
         </ThemeText>
 
-        <ThemeText variant="secondary">Manage your favorite books</ThemeText>
+        <ThemeText
+          variant="secondary"
+          style={{ fontSize: 20, fontWeight: "lighter" }}
+        >
+          Manage your favorite books
+        </ThemeText>
       </View>
 
       {isLoading ? (
@@ -29,36 +43,67 @@ const BookLists = () => {
           contentContainerStyle={styles.list}
           ListEmptyComponent={
             <View style={styles.empty}>
-              <ThemeText variant="title">No Books Found</ThemeText>
+              <ThemeText
+                variant="title"
+                style={{ fontSize: 18, fontWeight: "lighter" }}
+              >
+                No Books Found
+              </ThemeText>
 
-              <ThemeText variant="secondary">
+              <ThemeText
+                variant="secondary"
+                style={{ fontSize: 18, fontWeight: "lighter" }}
+              >
                 Start adding your favorite books.
               </ThemeText>
             </View>
           }
           renderItem={({ item }) => (
             <ThemeCard>
-              <Pressable style={styles.bookCard}>
-                <View style={styles.bookCover}>
-                  <ThemeText style={styles.coverText}>
-                    {item.title?.charAt(0)?.toUpperCase() || "D"}
-                  </ThemeText>
-                </View>
-
-                <View style={styles.bookInfo}>
-                  <ThemeText variant="title" style={styles.bookTitle}>
-                    {item.title}
-                  </ThemeText>
-
-                  <ThemeText variant="secondary">{item.author}</ThemeText>
-
-                  <View style={styles.category}>
-                    <ThemeText style={styles.categoryText}>
-                      {item.category}
+              <View style={styles.bookCard}>
+                <Pressable style={styles.bookContent}>
+                  <View style={styles.bookCover}>
+                    <ThemeText style={styles.coverText}>
+                      {item.title?.charAt(0)?.toUpperCase() || "D"}
                     </ThemeText>
                   </View>
+
+                  <View style={styles.bookInfo}>
+                    <ThemeText variant="title" style={styles.bookTitle}>
+                      {item.title}
+                    </ThemeText>
+
+                    <ThemeText variant="secondary">{item.author}</ThemeText>
+
+                    <View style={styles.category}>
+                      <ThemeText style={styles.categoryText}>
+                        {item.category}
+                      </ThemeText>
+                    </View>
+                  </View>
+                </Pressable>
+
+                <View style={styles.actions}>
+                  <Pressable
+                    // onPress={() => handleEdit(item)}
+                    style={styles.editButton}
+                    hitSlop={8}
+                  >
+                    {/* <Pencil size={18} color="#3b82f6" /> */}
+                    <ThemeText>edit</ThemeText>
+                  </Pressable>
+
+                  <Pressable
+                    onPress={() => handleDelete(item.$id)}
+                    style={styles.deleteButton}
+                    hitSlop={8}
+                  >
+                    <ThemeText>delete</ThemeText>
+
+                    {/* <Trash2 size={18} color="#ef4444" /> */}
+                  </Pressable>
                 </View>
-              </Pressable>
+              </View>
             </ThemeCard>
           )}
         />

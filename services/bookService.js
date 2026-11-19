@@ -53,3 +53,34 @@ export const createBook = async (bookData) => {
     throw error;
   }
 };
+
+export const updateBook = async (bookId, data) => {
+  try {
+    const response = await tablesDB.updateRow({
+      databaseId: DATABASE_ID,
+      tableId: TABLE_ID,
+      rowId: bookId,
+      data,
+    });
+
+    return response;
+  } catch (error) {
+    console.log("Update Book Error:", error);
+    throw error;
+  }
+};
+
+export const deleteBook = async (bookId) => {
+  try {
+    await tablesDB.deleteRow({
+      databaseId: DATABASE_ID,
+      tableId: TABLE_ID,
+      rowId: bookId,
+    });
+
+    return true;
+  } catch (error) {
+    console.log("Delete Book Error:", error);
+    throw error;
+  }
+};
