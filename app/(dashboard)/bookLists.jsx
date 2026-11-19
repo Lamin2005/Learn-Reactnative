@@ -4,6 +4,7 @@ import ThemeView from "../../components/ThemeView";
 import ThemeText from "../../components/ThemeText";
 import ThemeCard from "../../components/ThemeCard";
 import { useBooks } from "../../hooks/useBook";
+import { BookSkeletonList } from "../../components/BookSkeleton";
 
 const BookLists = () => {
   const { books, isLoading } = useBooks();
@@ -18,9 +19,9 @@ const BookLists = () => {
         <ThemeText variant="secondary">Manage your favorite books</ThemeText>
       </View>
 
-      {isLoading && <ThemeText>Loading...</ThemeText>}
-
-      {!isLoading && (
+      {isLoading ? (
+        <BookSkeletonList />
+      ) : (
         <FlatList
           data={books}
           keyExtractor={(item) => item.$id}

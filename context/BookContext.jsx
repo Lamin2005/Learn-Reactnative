@@ -39,7 +39,6 @@ export const BookProvider = ({ children }) => {
       const newBook = await createBook(bookData);
 
       setBooks((prev) => [newBook, ...prev]);
-      return newBook;
     } catch (error) {
       console.log(error);
       throw error;
