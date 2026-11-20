@@ -1,13 +1,15 @@
 import { StyleSheet, View, FlatList, Pressable } from "react-native";
 
-import ThemeView from "../../components/ThemeView";
-import ThemeText from "../../components/ThemeText";
-import ThemeCard from "../../components/ThemeCard";
-import { useBooks } from "../../hooks/useBook";
-import { BookSkeletonList } from "../../components/BookSkeleton";
+import ThemeView from "../../../components/ThemeView";
+import ThemeText from "../../../components/ThemeText";
+import ThemeCard from "../../../components/ThemeCard";
+import { useBooks } from "../../../hooks/useBook";
+import { BookSkeletonList } from "../../../components/BookSkeleton";
+import { useRouter } from "expo-router";
 
 const BookLists = () => {
   const { books, isLoading, removeBook } = useBooks();
+  const router = useRouter();
 
   const handleDelete = async (bookId) => {
     try {
@@ -40,7 +42,10 @@ const BookLists = () => {
           data={books}
           keyExtractor={(item) => item.$id}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.list}
+          contentContainerStyle={[
+            styles.list,
+            books.length === 0 && styles.emptyList,
+          ]}
           ListEmptyComponent={
             <View style={styles.empty}>
               <ThemeText
@@ -52,7 +57,7 @@ const BookLists = () => {
 
               <ThemeText
                 variant="secondary"
-                style={{ fontSize: 18, fontWeight: "lighter" }}
+                style={{ fontSize: 16, fontWeight: "lighter" }}
               >
                 Start adding your favorite books.
               </ThemeText>
@@ -61,7 +66,10 @@ const BookLists = () => {
           renderItem={({ item }) => (
             <ThemeCard>
               <View style={styles.bookCard}>
-                <Pressable style={styles.bookContent}>
+                <Pressable
+                  style={styles.bookContent}
+                  onPress={() => router.push(`/books/${item.$id}`)}
+                >
                   <View style={styles.bookCover}>
                     <ThemeText style={styles.coverText}>
                       {item.title?.charAt(0)?.toUpperCase() || "D"}
@@ -171,5 +179,17 @@ const styles = StyleSheet.create({
     color: "#2563eb",
     fontSize: 11,
     fontWeight: "600",
+  },
+
+  emptyList: {
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+
+  empty: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 8,
   },
 });

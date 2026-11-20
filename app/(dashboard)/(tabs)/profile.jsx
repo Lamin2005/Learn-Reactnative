@@ -1,9 +1,9 @@
 import { StyleSheet, View, Pressable } from "react-native";
 
-import ThemeView from "../../components/ThemeView";
-import ThemeText from "../../components/ThemeText";
-import ThemeCard from "../../components/ThemeCard";
-import { useUser } from "../../hooks/useUser";
+import ThemeView from "../../../components/ThemeView";
+import ThemeText from "../../../components/ThemeText";
+import ThemeCard from "../../../components/ThemeCard";
+import { useUser } from "../../../hooks/useUser";
 
 const Profile = () => {
   const { user, logout, isLoading } = useUser();

@@ -7,9 +7,9 @@ import {
   ScrollView,
 } from "react-native";
 
-import ThemeView from "../../components/ThemeView";
-import ThemeText from "../../components/ThemeText";
-import { useBooks } from "../../hooks/useBook";
+import ThemeView from "../../../components/ThemeView";
+import ThemeText from "../../../components/ThemeText";
+import { useBooks } from "../../../hooks/useBook";
 import { router } from "expo-router";
 
 const CreateBook = () => {
