@@ -7,6 +7,7 @@ const DashboardLayout = () => {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="books/[id]" />
+        <Stack.Screen name="editBook/[id]" />
       </Stack>
     </ProtectRoute>
   );

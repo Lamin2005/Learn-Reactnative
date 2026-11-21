@@ -54,6 +54,7 @@ export const createBook = async (bookData) => {
   }
 };
 
+// Update Book
 export const updateBook = async (bookId, data) => {
   try {
     const response = await tablesDB.updateRow({
@@ -70,6 +71,7 @@ export const updateBook = async (bookId, data) => {
   }
 };
 
+// Delete Book
 export const deleteBook = async (bookId) => {
   try {
     await tablesDB.deleteRow({

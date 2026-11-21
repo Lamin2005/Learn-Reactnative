@@ -5,8 +5,10 @@ import { router, useLocalSearchParams } from "expo-router";
 import ThemeView from "../../../components/ThemeView";
 import ThemeText from "../../../components/ThemeText";
 import ThemeCard from "../../../components/ThemeCard";
+import Loading from "../../../components/Loading";
 
 import { useBooks } from "../../../hooks/useBook";
+import { useState } from "react";
 
 const BookDetail = () => {
   const { id } = useLocalSearchParams();
@@ -14,21 +16,29 @@ const BookDetail = () => {
 
   const book = books.find((item) => item.$id === id);
 
-  const handleDelete = async () => {
+  const [bookToDelete, setBookToDelete] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const confirmDelete = async () => {
+    if (!bookToDelete || isDeleting) {
+      return;
+    }
+
     try {
-      await removeBook(id);
-      router.back();
+      setIsDeleting(true);
+      await removeBook(bookToDelete.$id);
+      setBookToDelete(null);
     } catch (error) {
-      alert("Failed to delete book");
+      console.log("Delete Book Error:", error);
+      setDeleteError("Couldn't delete this book. Please try again.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   if (isLoading) {
-    return (
-      <ThemeView style={styles.container}>
-        <ThemeText>Loading book details...</ThemeText>
-      </ThemeView>
-    );
+    return <Loading />;
   }
 
   if (!book) {
@@ -94,21 +104,76 @@ const BookDetail = () => {
 
         <View style={styles.actions}>
           <Pressable
-            style={styles.editButton}
             onPress={() =>
               router.push({
-                pathname: "/(dashboard)/editBook/[id]",
+                pathname: "/editBook/[id]",
                 params: { id: book.$id },
               })
             }
+            style={styles.editButton}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={`Edit ${book.title}`}
           >
-            <ThemeText style={styles.buttonText}>Edit Book</ThemeText>
+            <ThemeText style={styles.editText}>Edit book</ThemeText>
           </Pressable>
 
-          <Pressable style={styles.deleteButton} onPress={handleDelete}>
-            <ThemeText style={styles.buttonText}>Delete Book</ThemeText>
+          <Pressable
+            onPress={() => {
+              setDeleteError("");
+              setBookToDelete(book);
+            }}
+            style={styles.deleteButton}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={`Delete ${book.title}`}
+          >
+            <ThemeText style={styles.deleteText}>Delete</ThemeText>
           </Pressable>
         </View>
+
+        {bookToDelete && (
+          <View style={styles.dialogOverlay}>
+            <View style={styles.dialog}>
+              <ThemeText style={styles.dialogTitle}>
+                {deleteError ? "Delete failed" : "Delete this book?"}
+              </ThemeText>
+              <ThemeText style={styles.dialogMessage}>
+                {deleteError ||
+                  `Are you sure you want to delete "${bookToDelete.title}"? This action can't be undone.`}
+              </ThemeText>
+
+              <View style={styles.dialogActions}>
+                <Pressable
+                  style={styles.cancelButton}
+                  onPress={() => setBookToDelete(null)}
+                  disabled={isDeleting}
+                  accessibilityRole="button"
+                >
+                  <ThemeText style={styles.cancelText}>Cancel</ThemeText>
+                </Pressable>
+
+                <Pressable
+                  style={[
+                    styles.confirmButton,
+                    isDeleting && styles.disabledButton,
+                  ]}
+                  onPress={confirmDelete}
+                  disabled={isDeleting}
+                  accessibilityRole="button"
+                >
+                  <ThemeText style={styles.confirmText}>
+                    {isDeleting
+                      ? "Deleting..."
+                      : deleteError
+                        ? "Try again"
+                        : "Delete"}
+                  </ThemeText>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        )}
       </ScrollView>
     </ThemeView>
   );
@@ -230,7 +295,74 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontWeight: "700",
   },
-
+  dialogOverlay: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 1,
+    elevation: 8,
+    backgroundColor: "rgba(15, 23, 42, 0.55)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+  },
+  dialog: {
+    width: "100%",
+    maxWidth: 400,
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    padding: 22,
+  },
+  dialogTitle: {
+    color: "#1e293b",
+    fontSize: 20,
+    fontWeight: "800",
+    marginBottom: 8,
+  },
+  dialogMessage: {
+    color: "#475569",
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  dialogActions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 10,
+    marginTop: 22,
+  },
+  cancelButton: {
+    minWidth: 90,
+    minHeight: 44,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#f1f5f9",
+    paddingHorizontal: 14,
+  },
+  cancelText: {
+    color: "#334155",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  confirmButton: {
+    minWidth: 90,
+    minHeight: 44,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    backgroundColor: "#dc2626",
+    paddingHorizontal: 14,
+  },
+  confirmText: {
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  disabledButton: {
+    opacity: 0.6,
+  },
   empty: {
     flex: 1,
     justifyContent: "center",
